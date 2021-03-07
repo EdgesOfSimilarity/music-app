@@ -13,12 +13,15 @@ import static java.util.Objects.isNull;
 @Component
 public class KeyFiller {
 
-    public void fillKeys(Key[] keys, Note[] noteSequence) {
+    public void fillMidiKeys(Key[] keys, Note[] noteSequence) {
         for (int i = 0; i < noteSequence.length; i++) {
-            final Key key = new Key();
-            key.setNumber(i + 1);
-            key.setNote(noteSequence[i]);
-            keys[i] = key;
+            fillOneMidiKey(keys, noteSequence[i], i);
+        }
+    }
+
+    public void fillStringKeys(Key[] keys, Note[] noteSequence) {
+        for (int i = 0; i < noteSequence.length; i++) {
+            fillOneStringKey(keys, noteSequence[i], i);
         }
     }
 
@@ -65,5 +68,19 @@ public class KeyFiller {
                 .filter(key -> key.getNumber() == number)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
+    }
+
+    private void fillOneMidiKey(Key[] keys, Note note, int i) {
+        final Key key = new Key();
+        key.setNumber(i + 1);
+        key.setNote(note);
+        keys[i] = key;
+    }
+
+    private void fillOneStringKey(Key[] keys, Note note, int i) {
+        final Key key = new Key();
+        key.setNumber(i);
+        key.setNote(note);
+        keys[i] = key;
     }
 }

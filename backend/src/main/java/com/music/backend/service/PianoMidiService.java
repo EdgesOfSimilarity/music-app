@@ -32,7 +32,7 @@ public class PianoMidiService {
         final Key[] keys = new Key[DEFAULT_LENGTH];
         final Note[] noteSequence = noteFiller.getNoteSequence(keys.length, START_NOTE);
 
-        keyFiller.fillKeys(keys, noteSequence);
+        keyFiller.fillMidiKeys(keys, noteSequence);
 
         pianoMidi.setKeys(keys);
         return pianoMidi;
