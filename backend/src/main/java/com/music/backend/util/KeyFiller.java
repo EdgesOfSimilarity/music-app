@@ -19,9 +19,9 @@ public class KeyFiller {
         }
     }
 
-    public void fillStringKeys(Key[] keys, Note[] noteSequence) {
+    public void fillStringKeys(Key[] keys, Note[] noteSequence, int stringNumber) {
         for (int i = 0; i < noteSequence.length; i++) {
-            fillOneStringKey(keys, noteSequence[i], i);
+            fillOneStringKey(keys, noteSequence[i], stringNumber, i);
         }
     }
 
@@ -84,10 +84,11 @@ public class KeyFiller {
         keys[i] = key;
     }
 
-    private void fillOneStringKey(Key[] keys, Note note, int i) {
+    private void fillOneStringKey(Key[] keys, Note note, int stringNumber, int i) {
         final Key key = new Key();
         key.setNumber(i);
         key.setNote(note);
+        key.setStringNumber(stringNumber);
         keys[i] = key;
     }
 }

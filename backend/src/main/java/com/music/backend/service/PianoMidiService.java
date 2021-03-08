@@ -56,9 +56,8 @@ public class PianoMidiService {
         return pianoMidi;
     }
 
-    public PianoMidi getIntervalPianoMidi(Key key, int... intervals) {
+    public PianoMidi getIntervalPianoMidi(int startKeyNumber, int... intervals) {
         final PianoMidi pianoMidi = getRawPianoMidi();
-        final int startKeyNumber = key.getNumber();
         final Key[] pianoKeys = pianoMidi.getKeys();
 
         if (startKeyNumber <= 0 || startKeyNumber > pianoKeys.length) {

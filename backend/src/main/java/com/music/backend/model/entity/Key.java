@@ -6,6 +6,7 @@ import lombok.Data;
 public class Key {
 
     private int number;
+    private Integer stringNumber;
 
     private Note note;
     private Key prevIntervalKey;

@@ -43,12 +43,12 @@ public class NoteFiller {
         return toneNotes;
     }
 
-    public Note[] getChordNotes(Note note, Tone tone) {
+    public Note[] getChordNotes(Note tonic, Tone tone) {
         final Note[] chordNotes = new Note[CHORD_NOTES_AMOUNT];
 
-        chordNotes[0] = note;
-        chordNotes[1] = tone == Tone.MAJOR ? getIntervalNote(note, BIG_THIRD) : getIntervalNote(note, SMALL_THIRD);
-        chordNotes[2] = getIntervalNote(note, QUINT);
+        chordNotes[0] = tonic;
+        chordNotes[1] = tone == Tone.MAJOR ? getIntervalNote(tonic, BIG_THIRD) : getIntervalNote(tonic, SMALL_THIRD);
+        chordNotes[2] = getIntervalNote(tonic, QUINT);
 
         return chordNotes;
     }

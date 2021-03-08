@@ -1,11 +1,11 @@
 package com.music.backend.service;
 
 import com.music.backend.model.entity.GuitarString;
-import com.music.backend.model.entity.Key;
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.Ukulele;
 import com.music.backend.util.KeyFiller;
 import com.music.backend.util.NoteFiller;
+import com.music.backend.util.StringFiller;
 import com.music.backend.util.Tone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +23,22 @@ public class UkuleleService {
 
     private final KeyFiller keyFiller;
     private final NoteFiller noteFiller;
+    private final StringFiller stringFiller;
 
     @Value("${ukulele.open.notes}")
     private String[] openNotes;
 
-    public UkuleleService(@Autowired KeyFiller keyFiller, @Autowired NoteFiller noteFiller) {
+    public UkuleleService(@Autowired KeyFiller keyFiller,
+                          @Autowired NoteFiller noteFiller,
+                          @Autowired StringFiller stringFiller) {
         this.keyFiller = keyFiller;
         this.noteFiller = noteFiller;
+        this.stringFiller = stringFiller;
     }
 
     public Ukulele getRawUkulele() {
         final Ukulele ukulele = new Ukulele();
-        ukulele.setStrings(getRawStrings());
+        ukulele.setStrings(stringFiller.getRawStrings(STRINGS_AMOUNT, STRING_KEYS, openNotes));
 
         return ukulele;
     }
@@ -67,31 +71,8 @@ public class UkuleleService {
         }
 
         final GuitarString[] strings = ukulele.getStrings();
-        final GuitarString targetString = strings[stringNumber - 1];
-        final Key targetKey = targetString.getKeys()[keyNumber];
-        final Note intervalNote = noteFiller.getIntervalNote(targetKey.getNote(), interval);
-
-        targetKey.setInInterval(true);
-        Arrays.stream(strings)
-                .forEach(string -> keyFiller.fillStringKeyIntervals(string.getKeys(), targetKey, intervalNote));
+        stringFiller.fillIntervalStrings(strings, stringNumber, keyNumber, interval);
 
         return ukulele;
-    }
-
-    private GuitarString[] getRawStrings() {
-        final GuitarString[] strings = new GuitarString[STRINGS_AMOUNT];
-
-        for (int i = 0; i < openNotes.length; i++) {
-            strings[i] = new GuitarString();
-            fillString(strings[i], new Note(openNotes[i]), i + 1);
-        }
-
-        return strings;
-    }
-
-    private void fillString(GuitarString string, Note openNote, int stringNumber) {
-        string.setKeys(new Key[STRING_KEYS]);
-        string.setNumber(stringNumber);
-        keyFiller.fillStringKeys(string.getKeys(), noteFiller.getNoteSequence(STRING_KEYS, openNote));
     }
 }
