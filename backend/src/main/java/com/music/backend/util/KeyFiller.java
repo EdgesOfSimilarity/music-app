@@ -70,6 +70,13 @@ public class KeyFiller {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
+    public void fillStringKeyIntervals(Key[] keys, Key currentKey, Note intervalNote) {
+        Arrays.stream(keys)
+                .filter(key -> key.getNote().equals(intervalNote))
+                .peek(key -> key.setPrevIntervalKey(currentKey))
+                .forEach(key -> key.setInInterval(true));
+    }
+
     private void fillOneMidiKey(Key[] keys, Note note, int i) {
         final Key key = new Key();
         key.setNumber(i + 1);

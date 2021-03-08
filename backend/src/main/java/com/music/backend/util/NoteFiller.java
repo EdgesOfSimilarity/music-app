@@ -53,6 +53,12 @@ public class NoteFiller {
         return chordNotes;
     }
 
+    public Note getIntervalNote(Note note, int interval) {
+        final Note[] noteSequence = getNoteSequence(NOTES_AMOUNT, note);
+        return noteSequence[interval > 0 ? interval % NOTES_AMOUNT :
+                (NOTES_AMOUNT + (interval % NOTES_AMOUNT)) % NOTES_AMOUNT];
+    }
+
     private int getNoteIndex(Note note) {
         for (int i = 0; i < noteSequence.length; i++) {
             if (equalsIgnoreCase(note.getName(), noteSequence[i])) {
@@ -61,10 +67,5 @@ public class NoteFiller {
         }
 
         throw new IllegalArgumentException("incorrect note " + note.getName());
-    }
-
-    private Note getIntervalNote(Note note, int interval) {
-        final Note[] noteSequence = getNoteSequence(NOTES_AMOUNT, note);
-        return noteSequence[interval];
     }
 }

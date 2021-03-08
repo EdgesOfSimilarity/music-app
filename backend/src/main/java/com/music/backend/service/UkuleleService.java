@@ -7,6 +7,7 @@ import com.music.backend.model.instruments.Ukulele;
 import com.music.backend.util.KeyFiller;
 import com.music.backend.util.NoteFiller;
 import com.music.backend.util.Tone;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
+@Slf4j
 public class UkuleleService {
 
     private static final int STRINGS_AMOUNT = 4;
@@ -53,6 +55,25 @@ public class UkuleleService {
 
         Arrays.stream(ukulele.getStrings())
                 .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), notes));
+
+        return ukulele;
+    }
+
+    public Ukulele getIntervalUkulele(int stringNumber, int keyNumber, int interval) {
+        final Ukulele ukulele = getRawUkulele();
+        if (stringNumber < 1 || stringNumber > STRINGS_AMOUNT || keyNumber < 0 || keyNumber > STRING_KEYS) {
+            log.info("incorrect string number {} or key number {}. return raw ukulele", stringNumber, keyNumber);
+            return ukulele;
+        }
+
+        final GuitarString[] strings = ukulele.getStrings();
+        final GuitarString targetString = strings[stringNumber - 1];
+        final Key targetKey = targetString.getKeys()[keyNumber];
+        final Note intervalNote = noteFiller.getIntervalNote(targetKey.getNote(), interval);
+
+        targetKey.setInInterval(true);
+        Arrays.stream(strings)
+                .forEach(string -> keyFiller.fillStringKeyIntervals(string.getKeys(), targetKey, intervalNote));
 
         return ukulele;
     }
