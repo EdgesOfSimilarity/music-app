@@ -13,6 +13,6 @@ public class Note {
     }
 
     public Note(String name) {
-        this.name = name;
+        this.name = name.replace('d', '#');
     }
 }
