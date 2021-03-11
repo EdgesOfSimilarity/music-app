@@ -2,15 +2,18 @@ package com.music.backend.util;
 
 import com.music.backend.model.entity.Key;
 import com.music.backend.model.entity.Note;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
 @Component
+@Slf4j
 public class KeyFiller {
 
     public void fillMidiKeys(Key[] keys, Note[] noteSequence) {
@@ -41,33 +44,31 @@ public class KeyFiller {
                 .forEach(key -> key.setInChord(true));
     }
 
-    public void fillKeyIntervals(Key[] keys, Key currentKey, int[] intervals) {
-        for (int interval : intervals) {
-            if (interval == 0) {
-                continue;
-            }
-
-            final Key nextKey = getKey(keys, currentKey.getNumber() + interval);
-            if (isNull(nextKey)) {
-                break;
-            }
-
-            nextKey.setInInterval(true);
-            nextKey.setPrevIntervalKey(currentKey);
-
-            currentKey = nextKey;
+    public void fillKeyIntervals(Key[] keys, int startKeyNumber, int... intervals) {
+        if (startKeyNumber <= 0 || startKeyNumber > keys.length) {
+            log.info("incorrect key number. not fill");
+            return;
         }
+
+        Optional<Key> currentKey = getKey(keys, startKeyNumber);
+        currentKey.ifPresent(key -> key.setInInterval(true));
+
+        if (isNull(intervals) || intervals.length == 0) {
+            log.info("empty intervals");
+            return;
+        }
+
+        currentKey.ifPresent(key -> fillKeyIntervalsWithoutStart(keys, key, intervals));
     }
 
-    public Key getKey(Key[] keys, int number) {
+    private Optional<Key> getKey(Key[] keys, int number) {
         if (number > keys.length || number < 0) {
-            return null;
+            return Optional.empty();
         }
 
         return Arrays.stream(keys)
                 .filter(key -> key.getNumber() == number)
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .findFirst();
     }
 
     public void fillStringKeyIntervals(Key[] keys, Key currentKey, Note intervalNote) {
@@ -78,17 +79,37 @@ public class KeyFiller {
     }
 
     private void fillOneMidiKey(Key[] keys, Note note, int i) {
-        final Key key = new Key();
+        final Key key = Optional.ofNullable(keys[i]).orElse(new Key());
         key.setNumber(i + 1);
         key.setNote(note);
         keys[i] = key;
     }
 
     private void fillOneStringKey(Key[] keys, Note note, int stringNumber, int i) {
-        final Key key = new Key();
+        final Key key = Optional.ofNullable(keys[i]).orElse(new Key());
         key.setNumber(i);
         key.setNote(note);
         key.setStringNumber(stringNumber);
         keys[i] = key;
+    }
+
+    private void fillKeyIntervalsWithoutStart(Key[] keys, Key currentKey, int[] intervals) {
+        for (int interval : intervals) {
+            if (interval == 0) {
+                continue;
+            }
+
+            final Optional<Key> nextKeyOptional = getKey(keys, currentKey.getNumber() + interval);
+            if (!nextKeyOptional.isPresent()) {
+                break;
+            }
+
+            final Key nextKey = nextKeyOptional.get();
+
+            nextKey.setInInterval(true);
+            nextKey.setPrevIntervalKey(currentKey);
+
+            currentKey = nextKey;
+        }
     }
 }
