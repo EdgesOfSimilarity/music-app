@@ -1,4 +1,4 @@
-package com.music.backend.rest.model;
+package com.music.backend.rest.instrument;
 
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.Guitar;

@@ -1,4 +1,4 @@
-package com.music.backend.rest.model;
+package com.music.backend.rest.instrument;
 
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.DrumMidi;
@@ -37,7 +37,7 @@ public class DrumMidiController {
 
     @GetMapping("/interval")
     public DrumMidi getInterval(@RequestParam int startKey,
-                              @RequestParam int... interval) {
+                                @RequestParam int... interval) {
         return service.getIntervalDrumMidi(startKey, interval);
     }
 }

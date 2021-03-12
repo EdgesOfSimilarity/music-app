@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+import static java.lang.String.format;
+import static java.util.Objects.isNull;
+
 @Service
 @Slf4j
 public class GuitarService {
@@ -43,36 +46,86 @@ public class GuitarService {
         return guitar;
     }
 
+    public Guitar getCustomRawGuitar(String[] openNotes) {
+        validateStringsAmount(openNotes);
+
+        final Guitar guitar = new Guitar();
+        guitar.setStrings(stringFiller.getRawStrings(STRINGS_AMOUNT, STRING_KEYS, openNotes));
+
+        return guitar;
+    }
+
     public Guitar getToneGuitar(Note toneNote, Tone tone) {
         final Guitar guitar = getRawGuitar();
-        final Note[] toneSequence = noteFiller.getNoteToneSequence(toneNote, tone);
+        fillToneGuitar(toneNote, tone, guitar);
 
-        Arrays.stream(guitar.getStrings())
-                .forEach(string -> keyFiller.fillKeysInToneSequence(string.getKeys(), toneSequence));
+        return guitar;
+    }
+
+    public Guitar getCustomToneGuitar(Note toneNote, Tone tone, String[] openNotes) {
+        final Guitar guitar = getCustomRawGuitar(openNotes);
+        fillToneGuitar(toneNote, tone, guitar);
 
         return guitar;
     }
 
     public Guitar getChordGuitar(Note tonic, Tone tone) {
         final Guitar guitar = getRawGuitar();
-        final Note[] chordNotes = noteFiller.getChordNotes(tonic, tone);
+        fillChordGuitar(tonic, tone, guitar);
 
-        Arrays.stream(guitar.getStrings())
-                .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), chordNotes));
+        return guitar;
+    }
+
+    public Guitar getCustomChordGuitar(Note tonic, Tone tone, String[] openNotes) {
+        final Guitar guitar = getCustomRawGuitar(openNotes);
+        fillChordGuitar(tonic, tone, guitar);
 
         return guitar;
     }
 
     public Guitar getIntervalGuitar(int stringNumber, int keyNumber, int interval) {
         final Guitar guitar = getRawGuitar();
+        fillIntervalGuitar(stringNumber, keyNumber, interval, guitar);
+
+        return guitar;
+    }
+
+    public Guitar getCustomIntervalGuitar(int stringNumber, int keyNumber, int interval, String[] openNotes) {
+        final Guitar guitar = getCustomRawGuitar(openNotes);
+        fillIntervalGuitar(stringNumber, keyNumber, interval, guitar);
+
+        return guitar;
+    }
+
+    private void fillToneGuitar(Note toneNote, Tone tone, Guitar guitar) {
+        final Note[] toneSequence = noteFiller.getNoteToneSequence(toneNote, tone);
+
+        Arrays.stream(guitar.getStrings())
+                .forEach(string -> keyFiller.fillKeysInToneSequence(string.getKeys(), toneSequence));
+    }
+
+    private void fillChordGuitar(Note tonic, Tone tone, Guitar guitar) {
+        final Note[] chordNotes = noteFiller.getChordNotes(tonic, tone);
+
+        Arrays.stream(guitar.getStrings())
+                .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), chordNotes));
+    }
+
+    private void fillIntervalGuitar(int stringNumber, int keyNumber, int interval, Guitar guitar) {
         if (stringNumber < 1 || stringNumber > STRINGS_AMOUNT || keyNumber < 0 || keyNumber > STRING_KEYS) {
             log.info("incorrect input string number {} or key number {}. return raw guitar", stringNumber, keyNumber);
-            return guitar;
+            return;
         }
 
         final GuitarString[] strings = guitar.getStrings();
         stringFiller.fillIntervalStrings(strings, stringNumber, keyNumber, interval);
+    }
 
-        return guitar;
+    private void validateStringsAmount(String[] openNotes) {
+        if (isNull(openNotes) || openNotes.length != STRINGS_AMOUNT) {
+            log.error("open notes length is not guitar strings amount {}", STRINGS_AMOUNT);
+            throw new IllegalArgumentException(
+                    format("open notes length is not guitar strings amount %d", STRINGS_AMOUNT));
+        }
     }
 }

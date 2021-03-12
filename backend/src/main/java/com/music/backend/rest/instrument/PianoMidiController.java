@@ -1,4 +1,4 @@
-package com.music.backend.rest.model;
+package com.music.backend.rest.instrument;
 
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.PianoMidi;
@@ -37,7 +37,7 @@ public class PianoMidiController {
 
     @GetMapping("/interval")
     public PianoMidi getInterval(@RequestParam int startKey,
-                              @RequestParam int... interval) {
+                                 @RequestParam int... interval) {
         return service.getIntervalPianoMidi(startKey, interval);
     }
 }

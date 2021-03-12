@@ -1,4 +1,4 @@
-package com.music.backend.rest.model;
+package com.music.backend.rest.instrument;
 
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.Ukulele;
@@ -37,8 +37,8 @@ public class UkuleleController {
 
     @GetMapping("/interval")
     public Ukulele getInterval(@RequestParam int string,
-                              @RequestParam int startKey,
-                              @RequestParam int interval) {
+                               @RequestParam int startKey,
+                               @RequestParam int interval) {
         return service.getIntervalUkulele(string, startKey, interval);
     }
 }
