@@ -42,4 +42,9 @@ public class TextPianoMidiController {
                               @RequestParam int... interval) {
         return printer.printPianoMidi(service.getIntervalPianoMidi(startKey, interval));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note) {
+        return printer.printPianoMidi(service.getPowerChordPianoMidi(new Note(note)));
+    }
 }

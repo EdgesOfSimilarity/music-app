@@ -42,4 +42,9 @@ public class PianoMidiController {
                                  @RequestParam int... interval) {
         return service.getIntervalPianoMidi(startKey, interval);
     }
+
+    @GetMapping("/powerChord")
+    public PianoMidi getPowerChord(@RequestParam String note) {
+        return service.getPowerChordPianoMidi(new Note(note));
+    }
 }

@@ -74,6 +74,16 @@ public class DrumMidiService {
         return drumMidi;
     }
 
+    public DrumMidi getPowerChordDrumMidi(Note tonic) {
+        final DrumMidi drumMidi = getRawDrumMidi();
+        final Note[] chordNotes = noteFiller.getPowerChordNotes(tonic);
+        final Key[] keys = collectKeysToOneArray(drumMidi.getBanks());
+
+        keyFiller.fillKeysInChord(keys, chordNotes);
+
+        return drumMidi;
+    }
+
     private MidiBank[] generateBanks() {
         return Stream.generate(MidiBank::new)
                 .limit(BANKS_AMOUNT)

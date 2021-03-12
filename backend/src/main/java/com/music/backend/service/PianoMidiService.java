@@ -63,4 +63,13 @@ public class PianoMidiService {
 
         return pianoMidi;
     }
+
+    public PianoMidi getPowerChordPianoMidi(Note tonic) {
+        final PianoMidi pianoMidi = getRawPianoMidi();
+        final Note[] chordNotes = noteFiller.getPowerChordNotes(tonic);
+
+        keyFiller.fillKeysInChord(pianoMidi.getKeys(), chordNotes);
+
+        return pianoMidi;
+    }
 }

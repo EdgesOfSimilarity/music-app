@@ -42,4 +42,9 @@ public class DrumMidiController {
                                 @RequestParam int... interval) {
         return service.getIntervalDrumMidi(startKey, interval);
     }
+
+    @GetMapping("/powerChord")
+    public DrumMidi getPowerChord(@RequestParam String note) {
+        return service.getPowerChordDrumMidi(new Note(note));
+    }
 }

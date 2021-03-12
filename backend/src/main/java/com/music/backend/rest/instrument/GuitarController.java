@@ -43,4 +43,9 @@ public class GuitarController {
                               @RequestParam int interval) {
         return service.getIntervalGuitar(string, startKey, interval);
     }
+
+    @GetMapping("/powerChord")
+    public Guitar getPowerChord(@RequestParam String note) {
+        return service.getPowerChordGuitar(new Note(note));
+    }
 }

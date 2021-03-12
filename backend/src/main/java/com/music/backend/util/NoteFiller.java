@@ -13,6 +13,7 @@ public class NoteFiller {
     private static final int NOTES_AMOUNT = 12;
     private static final int TONE_NOTES_AMOUNT = 7;
     private static final int CHORD_NOTES_AMOUNT = 3;
+    public static final int POWER_CHORD_NOTES_AMOUNT = 2;
 
     @Value("${note.sequence}")
     private String[] noteSequence;
@@ -57,6 +58,15 @@ public class NoteFiller {
         final Note[] noteSequence = getNoteSequence(NOTES_AMOUNT, note);
         return noteSequence[interval > 0 ? interval % NOTES_AMOUNT :
                 (NOTES_AMOUNT + (interval % NOTES_AMOUNT)) % NOTES_AMOUNT];
+    }
+
+    public Note[] getPowerChordNotes(Note tonic) {
+        final Note[] notes = new Note[POWER_CHORD_NOTES_AMOUNT];
+
+        notes[0] = tonic;
+        notes[1] = getIntervalNote(tonic, QUINT);
+
+        return notes;
     }
 
     private int getNoteIndex(Note note) {

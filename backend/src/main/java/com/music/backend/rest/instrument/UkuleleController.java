@@ -43,4 +43,9 @@ public class UkuleleController {
                                @RequestParam int interval) {
         return service.getIntervalUkulele(string, startKey, interval);
     }
+
+    @GetMapping("/powerChord")
+    public Ukulele getPowerChord(@RequestParam String note) {
+        return service.getPowerChordUkulele(new Note(note));
+    }
 }

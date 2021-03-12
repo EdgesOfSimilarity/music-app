@@ -46,4 +46,9 @@ public class TextCustomGuitarController {
                               @RequestParam String[] openNotes) {
         return printer.printGuitar(service.getCustomIntervalGuitar(string, startKey, interval, openNotes));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note, @RequestParam String[] openNotes) {
+        return printer.printGuitar(service.getCustomPowerChordGuitar(new Note(note), openNotes));
+    }
 }

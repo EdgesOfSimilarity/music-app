@@ -42,4 +42,9 @@ public class TextDrumMidiController {
                               @RequestParam int... interval) {
         return printer.printDrumMidi(service.getIntervalDrumMidi(startKey, interval));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note) {
+        return printer.printDrumMidi(service.getPowerChordDrumMidi(new Note(note)));
+    }
 }

@@ -97,6 +97,20 @@ public class UkuleleService {
         return ukulele;
     }
 
+    public Ukulele getPowerChordUkulele(Note tonic) {
+        final Ukulele guitar = getRawUkulele();
+        fillPowerChordUkulele(tonic, guitar);
+
+        return guitar;
+    }
+
+    public Ukulele getCustomPowerChordUkulele(Note tonic, String[] openNotes) {
+        final Ukulele guitar = getCustomRawUkulele(openNotes);
+        fillPowerChordUkulele(tonic, guitar);
+
+        return guitar;
+    }
+
     private void fillToneUkulele(Note toneNote, Tone tone, Ukulele ukulele) {
         final Note[] notes = noteFiller.getNoteToneSequence(toneNote, tone);
 
@@ -119,6 +133,12 @@ public class UkuleleService {
 
         final GuitarString[] strings = ukulele.getStrings();
         stringFiller.fillIntervalStrings(strings, stringNumber, keyNumber, interval);
+    }
+
+    private void fillPowerChordUkulele(Note tonic, Ukulele guitar) {
+        final Note[] notes = noteFiller.getPowerChordNotes(tonic);
+        Arrays.stream(guitar.getStrings())
+                .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), notes));
     }
 
     private void validateStringsAmount(String[] openNotes) {

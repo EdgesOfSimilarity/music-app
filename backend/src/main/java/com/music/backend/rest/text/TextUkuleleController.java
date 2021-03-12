@@ -43,4 +43,9 @@ public class TextUkuleleController {
                               @RequestParam int interval) {
         return printer.printUkulele(service.getIntervalUkulele(string, startKey, interval));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note) {
+        return printer.printUkulele(service.getPowerChordUkulele(new Note(note)));
+    }
 }

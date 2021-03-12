@@ -46,4 +46,9 @@ public class TextCustomUkuleleController {
                               @RequestParam String[] openNotes) {
         return printer.printUkulele(service.getCustomIntervalUkulele(string, startKey, interval, openNotes));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note, @RequestParam String[] openNotes) {
+        return printer.printUkulele(service.getCustomPowerChordUkulele(new Note(note), openNotes));
+    }
 }

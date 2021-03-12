@@ -97,16 +97,28 @@ public class GuitarService {
         return guitar;
     }
 
+    public Guitar getPowerChordGuitar(Note tonic) {
+        final Guitar guitar = getRawGuitar();
+        fillPowerChordGuitar(tonic, guitar);
+
+        return guitar;
+    }
+
+    public Guitar getCustomPowerChordGuitar(Note tonic, String[] openNotes) {
+        final Guitar guitar = getCustomRawGuitar(openNotes);
+        fillPowerChordGuitar(tonic, guitar);
+
+        return guitar;
+    }
+
     private void fillToneGuitar(Note toneNote, Tone tone, Guitar guitar) {
         final Note[] toneSequence = noteFiller.getNoteToneSequence(toneNote, tone);
-
         Arrays.stream(guitar.getStrings())
                 .forEach(string -> keyFiller.fillKeysInToneSequence(string.getKeys(), toneSequence));
     }
 
     private void fillChordGuitar(Note tonic, Tone tone, Guitar guitar) {
         final Note[] chordNotes = noteFiller.getChordNotes(tonic, tone);
-
         Arrays.stream(guitar.getStrings())
                 .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), chordNotes));
     }
@@ -119,6 +131,12 @@ public class GuitarService {
 
         final GuitarString[] strings = guitar.getStrings();
         stringFiller.fillIntervalStrings(strings, stringNumber, keyNumber, interval);
+    }
+
+    private void fillPowerChordGuitar(Note tonic, Guitar guitar) {
+        final Note[] notes = noteFiller.getPowerChordNotes(tonic);
+        Arrays.stream(guitar.getStrings())
+                .forEach(string -> keyFiller.fillKeysInChord(string.getKeys(), notes));
     }
 
     private void validateStringsAmount(String[] openNotes) {

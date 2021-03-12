@@ -44,4 +44,9 @@ public class CustomGuitarController {
                               @RequestParam String[] openNotes) {
         return service.getCustomIntervalGuitar(string, startKey, interval, openNotes);
     }
+
+    @GetMapping("/powerChord")
+    public Guitar getPowerChord(@RequestParam String note, @RequestParam String[] openNotes) {
+        return service.getCustomPowerChordGuitar(new Note(note), openNotes);
+    }
 }

@@ -43,4 +43,9 @@ public class TextGuitarController {
                               @RequestParam int interval) {
         return printer.printGuitar(service.getIntervalGuitar(string, startKey, interval));
     }
+
+    @GetMapping("/powerChord")
+    public String getPowerChord(@RequestParam String note) {
+        return printer.printGuitar(service.getPowerChordGuitar(new Note(note)));
+    }
 }
