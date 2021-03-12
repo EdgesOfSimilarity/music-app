@@ -5,6 +5,7 @@ import com.music.backend.model.instruments.PianoMidi;
 import com.music.backend.service.PianoMidiService;
 import com.music.backend.util.Tone;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,23 +29,33 @@ public class PianoMidiController {
     }
 
     @GetMapping("/tone")
-    public PianoMidi getTone(@RequestParam String note, @RequestParam String tone) {
+    public PianoMidi getTone(@RequestParam
+                             @ApiParam(value = "note of tone") String note,
+                             @RequestParam
+                             @ApiParam(value = "'major' or 'minor'") String tone) {
         return service.getTonePianoMidi(new Note(note), Tone.valueOf(tone.toUpperCase()));
     }
 
     @GetMapping("/chord")
-    public PianoMidi getChord(@RequestParam String note, @RequestParam String tone) {
+    public PianoMidi getChord(@RequestParam
+                              @ApiParam(value = "tonic of chord") String note,
+                              @RequestParam
+                              @ApiParam(value = "'major' or 'minor'") String tone) {
         return service.getChordPianoMidi(new Note(note), Tone.valueOf(tone.toUpperCase()));
     }
 
     @GetMapping("/interval")
-    public PianoMidi getInterval(@RequestParam int startKey,
-                                 @RequestParam int... interval) {
+    public PianoMidi getInterval(@RequestParam
+                                 @ApiParam(value = "number of start key") int startKey,
+                                 @RequestParam
+                                 @ApiParam(value = "music interval. example '7,12' - " +
+                                                   "quint and octave from quint") int... interval) {
         return service.getIntervalPianoMidi(startKey, interval);
     }
 
     @GetMapping("/powerChord")
-    public PianoMidi getPowerChord(@RequestParam String note) {
+    public PianoMidi getPowerChord(@RequestParam
+                                   @ApiParam(value = "tonic of chord") String note) {
         return service.getPowerChordPianoMidi(new Note(note));
     }
 }

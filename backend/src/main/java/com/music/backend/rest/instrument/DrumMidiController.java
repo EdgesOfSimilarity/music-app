@@ -5,6 +5,7 @@ import com.music.backend.model.instruments.DrumMidi;
 import com.music.backend.service.DrumMidiService;
 import com.music.backend.util.Tone;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,23 +29,33 @@ public class DrumMidiController {
     }
 
     @GetMapping("/tone")
-    public DrumMidi getTone(@RequestParam String note, @RequestParam String tone) {
+    public DrumMidi getTone(@RequestParam
+                            @ApiParam(value = "note of tone") String note,
+                            @RequestParam
+                            @ApiParam(value = "'major' or 'minor'") String tone) {
         return service.getToneDrumMidi(new Note(note), Tone.valueOf(tone.toUpperCase()));
     }
 
     @GetMapping("/chord")
-    public DrumMidi getChord(@RequestParam String note, @RequestParam String tone) {
+    public DrumMidi getChord(@RequestParam
+                             @ApiParam(value = "tonic of chord") String note,
+                             @RequestParam
+                             @ApiParam(value = "'major' or 'minor'") String tone) {
         return service.getChordDrumMidi(new Note(note), Tone.valueOf(tone.toUpperCase()));
     }
 
     @GetMapping("/interval")
-    public DrumMidi getInterval(@RequestParam int startKey,
-                                @RequestParam int... interval) {
+    public DrumMidi getInterval(@RequestParam
+                                @ApiParam(value = "number of start key") int startKey,
+                                @RequestParam
+                                @ApiParam(value = "music interval. example '7,12' - " +
+                                                  "quint and octave from quint") int... interval) {
         return service.getIntervalDrumMidi(startKey, interval);
     }
 
     @GetMapping("/powerChord")
-    public DrumMidi getPowerChord(@RequestParam String note) {
+    public DrumMidi getPowerChord(@RequestParam
+                                  @ApiParam(value = "tonic of chord") String note) {
         return service.getPowerChordDrumMidi(new Note(note));
     }
 }
