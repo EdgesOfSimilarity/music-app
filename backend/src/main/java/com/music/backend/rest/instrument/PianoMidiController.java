@@ -4,6 +4,7 @@ import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.PianoMidi;
 import com.music.backend.service.PianoMidiService;
 import com.music.backend.util.Tone;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pianoMidi")
+@Api(tags = {"Controller for nektar piano midi"})
 public class PianoMidiController {
 
     private final PianoMidiService service;

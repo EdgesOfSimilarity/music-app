@@ -4,6 +4,7 @@ import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.DrumMidi;
 import com.music.backend.service.DrumMidiService;
 import com.music.backend.util.Tone;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/drumMidi")
+@Api(tags = {"Controller for akai mpd 218 midi"})
 public class DrumMidiController {
 
     private final DrumMidiService service;

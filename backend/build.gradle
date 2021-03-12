@@ -13,7 +13,10 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.springfox:springfox-boot-starter:' + springFoxBootStarter
+
+    implementation 'org.apache.commons:commons-lang3'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.apache.commons:commons-lang3'
 }
