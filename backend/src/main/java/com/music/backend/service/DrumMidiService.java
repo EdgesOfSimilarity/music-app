@@ -4,9 +4,11 @@ import com.music.backend.model.entity.Key;
 import com.music.backend.model.entity.MidiBank;
 import com.music.backend.model.entity.Note;
 import com.music.backend.model.instruments.DrumMidi;
+import com.music.backend.service.api.InstrumentService;
 import com.music.backend.util.KeyFiller;
 import com.music.backend.util.NoteFiller;
 import com.music.backend.util.Tone;
+import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,14 +17,19 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import static com.music.backend.model.InstrumentName.DRUM_MIDI;
+
 @Service
-public class DrumMidiService {
+public class DrumMidiService implements InstrumentService {
 
     public static final int BANKS_AMOUNT = 3;
     public static final int BANK_DIMENSION = 4;
 
     private final NoteFiller noteFiller;
     private final KeyFiller keyFiller;
+
+    @Getter
+    private final String instrument;
 
     @Value("${drum.midi.banks}")
     private char[] bankNames;
@@ -31,9 +38,11 @@ public class DrumMidiService {
     private String startNote;
 
     public DrumMidiService(@Autowired NoteFiller noteFiller,
-                           @Autowired KeyFiller keyFiller) {
+                           @Autowired KeyFiller keyFiller,
+                           @Value(DRUM_MIDI) String instrument) {
         this.noteFiller = noteFiller;
         this.keyFiller = keyFiller;
+        this.instrument = instrument;
     }
 
     public DrumMidi getRawDrumMidi() {
