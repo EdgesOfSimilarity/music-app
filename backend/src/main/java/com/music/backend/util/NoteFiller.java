@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static com.music.backend.model.Interval.*;
+import static java.lang.String.format;
+import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 @Component
@@ -13,7 +15,7 @@ public class NoteFiller {
     private static final int NOTES_AMOUNT = 12;
     private static final int TONE_NOTES_AMOUNT = 7;
     private static final int CHORD_NOTES_AMOUNT = 3;
-    public static final int POWER_CHORD_NOTES_AMOUNT = 2;
+    private static final int POWER_CHORD_NOTES_AMOUNT = 2;
 
     @Value("${note.sequence}")
     private String[] noteSequence;
@@ -24,8 +26,12 @@ public class NoteFiller {
     private int[] minorPattern;
 
     public Note[] getNoteSequence(int length, Note startNote) {
-        final Note[] notes = new Note[length];
+        final String startNoteName = startNote.getName();
+        if (!contains(noteSequence, startNoteName)) {
+            throw new IllegalArgumentException(format("incorrect input note %s", startNoteName));
+        }
 
+        final Note[] notes = new Note[length];
         for (int i = 0, n = getNoteIndex(startNote); i < length; i++, n++) {
             notes[i] = new Note(noteSequence[n % noteSequence.length]);
         }

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.music.backend.model.InstrumentName.PIANO_MIDI;
+
 @RestController
-@RequestMapping("/pianoMidi")
+@RequestMapping("/" + PIANO_MIDI)
 @Api(tags = {"Controller for nektar piano midi"})
 public class PianoMidiController {
 
