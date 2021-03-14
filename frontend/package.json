@@ -10,7 +10,9 @@
   "dependencies": {
     "buefy": "^0.9.4",
     "core-js": "^3.6.5",
+    "reset-css": "^5.0.1",
     "vue": "^2.6.11",
+    "vue-horizontal-scroll": "^0.2.4",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },
@@ -27,7 +29,20 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.2",
+    "style-resources-loader": "^1.4.1",
     "vue-template-compiler": "^2.6.11"
+  },
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "semi": true,
+        "trailingComma": "none"
+      }
+    ]
   }
 }

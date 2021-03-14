@@ -1,18 +1,34 @@
-<template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+<template lang="pug">
+  .home
+    Instruments
+    br
+    br
+    PianoScheme
+    br
+    br
+    UkuleleScheme
+    br
+    br
+    GuitarScheme
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import Instruments from "@/components/Instruments";
+import PianoScheme from "@/components/PianoScheme";
+import UkuleleScheme from "@/components/UkuleleScheme";
+import GuitarScheme from "@/components/GuitarScheme";
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    Instruments,
+    PianoScheme,
+    UkuleleScheme,
+    GuitarScheme
   }
 };
 </script>
+
+<style lang="sass">
+.logo
+  width: 100px
+</style>
